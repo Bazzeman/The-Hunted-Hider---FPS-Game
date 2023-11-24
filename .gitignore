@@ -1,0 +1,21 @@
+# Unity generated files
+Library/
+Temp/
+obj/
+Logs/
+*.pidb
+*.userprefs
+*.apk
+*.unitypackage
+
+# VS Code generated files
+.vscode/
+
+# Rider generated files
+.idea/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
