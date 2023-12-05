@@ -59,13 +59,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Testing\TestCam.cs" />
+    <Compile Include="Assets\Scripts\Enemies\AbstractEnemy.cs" />
     <Compile Include="Assets\Scripts\Testing\TestMeshGenerator.cs" />
     <Compile Include="Assets\Scripts\Testing\TestShooting.cs" />
-    <Compile Include="Assets\Scripts\IEnemy.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Zombie.cs" />
     <Compile Include="Assets\Scripts\Testing\TestEnemyMovement.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Zombie.cs" />
     <Compile Include="Assets\Scripts\Testing\TestPlayer.cs" />
   </ItemGroup>
   <ItemGroup>

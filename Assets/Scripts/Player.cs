@@ -32,11 +32,6 @@ public class Player : MonoBehaviour
             + transform.forward * Input.GetAxis("Vertical") * horizontalSpeed * Time.deltaTime);
 
         // Make the player jump and switch between walking and running if it is on the ground. 
-        /** Note: It's difficult to make the hitbox of the Character Controller perfect,
-         * thus the Box Colliders of the player's body will attempt to fix the position.
-         * Because the Character Controller hitbox is not perfectly alligned, the player will move up and
-         * down rapidly by a very small amount of pixels, making controller.isGrounded not always return true!
-         * Hopefully we can find a better way to resolve this problem in class. **/
         if (controller.isGrounded)
         {
             horizontalSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
@@ -62,14 +57,9 @@ public class Player : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Enemy"))
                 {
-                    Destroy(hit.collider.gameObject.transform.parent.gameObject);
+                    Destroy(hit.collider.gameObject);
                 }
             }
         }
-    }
-
-    public void Attack()
-    {
-
     }
 }
