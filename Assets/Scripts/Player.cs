@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
         // Moves the player on the Y-axis based on the cursor's horizontal position.
         transform.Rotate(cameraSensitivity * Input.GetAxis("Mouse X") * Time.deltaTime * Vector3.up);
 
-        // Makes a ray if the left mouse button is klicked, which will destroy the game object the camera is looking at and if it has a enemy tag.
+        // Makes a ray if the left mouse button is klicked, which will damage the enemy which has the enemy tag and where the ray passes trough.
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -57,9 +57,19 @@ public class Player : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Enemy"))
                 {
-                    Destroy(hit.collider.gameObject);
+                    hit.collider.gameObject.GetComponent<AbstractEnemy>().TakeDamage(damage);
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Method to call when the player takes damage.
+    /// </summary>
+    /// <param name="damage">The integer damage amount</param>
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        Debug.Log($"Ouch! Health: {health} -{damage}");
     }
 }
