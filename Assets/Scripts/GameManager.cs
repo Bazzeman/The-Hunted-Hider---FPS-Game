@@ -19,4 +19,9 @@ public class GameManager : MonoBehaviour
             Debug.Log("You won!");
         }
     }
+
+    public static void GameOver()
+    {
+        Debug.Log("You lost!");
+    }
 }
