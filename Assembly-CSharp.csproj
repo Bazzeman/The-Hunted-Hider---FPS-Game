@@ -61,11 +61,13 @@
     <Compile Include="Assets\Scripts\Testing\TestCam.cs" />
     <Compile Include="Assets\Scripts\Projectiles\Rock.cs" />
     <Compile Include="Assets\Scripts\Enemies\AbstractEnemy.cs" />
+    <Compile Include="Assets\Scripts\MenuPanel.cs" />
     <Compile Include="Assets\Scripts\Weapons\Revolver.cs" />
     <Compile Include="Assets\Scripts\Testing\TestMeshGenerator.cs" />
     <Compile Include="Assets\Scripts\Testing\TestShooting.cs" />
     <Compile Include="Assets\Scripts\Weapons\Sniper.cs" />
     <Compile Include="Assets\Scripts\Weapons\Shotgun.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemySoundManager.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Weapons\AbstractWeapon.cs" />
