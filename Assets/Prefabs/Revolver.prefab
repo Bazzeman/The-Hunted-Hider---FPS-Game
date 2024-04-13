@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a19d2da931e9a7946baefbab93b19e76, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.015
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a19d2da931e9a7946baefbab93b19e76, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.107
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a19d2da931e9a7946baefbab93b19e76, type: 3}
       propertyPath: m_LocalPosition.z
@@ -81,4 +81,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ad7082f3132fbd4085e2ee7848fa400, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shellsInMagazine: 0
+  shootSound: {fileID: 8300000, guid: 5a24047955c0c9942a3989ad776b625c, type: 3}
+  reloadSound: {fileID: 8300000, guid: 6a3d34a5986381d4cbf0280a0c4fd716, type: 3}
+  shellsInMagazine: 6

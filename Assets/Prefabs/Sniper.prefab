@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 77435dcb09fbf774280b1c4036aa4bbf, type: 2}
     - target: {fileID: 919132149155446097, guid: db5ef47b9b5631844bab1e1c50f5a988, type: 3}
       propertyPath: m_Name
-      value: Sniper 1
+      value: Sniper
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -64,7 +64,7 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2101714777101193179}
   m_SourcePrefab: {fileID: 100100000, guid: db5ef47b9b5631844bab1e1c50f5a988, type: 3}
---- !u!1 &1291305650193920650 stripped
+--- !u!1 &5815423063875443386 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: db5ef47b9b5631844bab1e1c50f5a988, type: 3}
   m_PrefabInstance: {fileID: 6662479330886936555}
@@ -75,10 +75,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1291305650193920650}
+  m_GameObject: {fileID: 5815423063875443386}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 539ca667f3f28454ca7756d49a03f59c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootSound: {fileID: 8300000, guid: 086ba86e51130c144bf86c9b59a1a98a, type: 3}
+  reloadSound: {fileID: 8300000, guid: c9f61043fb206ca49b7805b6c1793fff, type: 3}
   shellsInMagazine: 0

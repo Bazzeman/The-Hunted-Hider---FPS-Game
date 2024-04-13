@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 77435dcb09fbf774280b1c4036aa4bbf, type: 2}
     - target: {fileID: 919132149155446097, guid: f33a6750edda74241bd72bbd1b8fec7d, type: 3}
       propertyPath: m_Name
-      value: ShotGun Variant
+      value: Shotgun
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -76,7 +76,7 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6980986186854376917}
   m_SourcePrefab: {fileID: 100100000, guid: f33a6750edda74241bd72bbd1b8fec7d, type: 3}
---- !u!1 &7791253893371926660 stripped
+--- !u!1 &5394449449654812975 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f33a6750edda74241bd72bbd1b8fec7d, type: 3}
   m_PrefabInstance: {fileID: 5052342655245565054}
@@ -87,10 +87,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791253893371926660}
+  m_GameObject: {fileID: 5394449449654812975}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f66e413242b1e004c9d28052536c6ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootSound: {fileID: 8300000, guid: 3990a79bb3c9d1e428d1648d0f86c8f6, type: 3}
+  reloadSound: {fileID: 8300000, guid: eaf2b70780bf26d468e4244f4a37b4ef, type: 3}
   shellsInMagazine: 0

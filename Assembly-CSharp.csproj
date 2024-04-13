@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E29CFB21-1CA2-A7A2-2D16-E2910A0D4541}</ProjectGuid>
+    <ProjectGuid>{1DDC482D-7530-1916-C226-3C5D488BEBD5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -61,11 +61,13 @@
     <Compile Include="Assets\Scripts\Testing\TestCam.cs" />
     <Compile Include="Assets\Scripts\Projectiles\Rock.cs" />
     <Compile Include="Assets\Scripts\Enemies\AbstractEnemy.cs" />
+    <Compile Include="Assets\Scripts\MenuPanel.cs" />
     <Compile Include="Assets\Scripts\Weapons\Revolver.cs" />
     <Compile Include="Assets\Scripts\Testing\TestMeshGenerator.cs" />
     <Compile Include="Assets\Scripts\Testing\TestShooting.cs" />
     <Compile Include="Assets\Scripts\Weapons\Sniper.cs" />
     <Compile Include="Assets\Scripts\Weapons\Shotgun.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemySoundManager.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Weapons\AbstractWeapon.cs" />

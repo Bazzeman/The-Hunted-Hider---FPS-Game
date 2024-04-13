@@ -4,6 +4,7 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(AudioSource))]
 public abstract class AbstractEnemy : MonoBehaviour
 {
     protected abstract int Health { get; set; }
@@ -20,6 +21,10 @@ public abstract class AbstractEnemy : MonoBehaviour
     protected NavMeshAgent NavAgent { get; set; }
     protected Vector3 NewLocation { get; set; }
 
+    public float chanceOfAudioPlaying = 0.03F;
+    public AudioClip[] audioEffects;
+    private AudioSource audioSource;
+
     private bool canAttack = true;
 
     void Start()
@@ -27,6 +32,7 @@ public abstract class AbstractEnemy : MonoBehaviour
         HealthBar = GetComponentInChildren<Slider>();
         Target = GameObject.FindWithTag("Player");
         NavAgent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
         NewLocation = new Vector3(Random.Range(-MovementRadius, MovementRadius), transform.position.y, Random.Range(-MovementRadius, MovementRadius));
         HealthBar.maxValue = Health;
         HealthBar.value = Health;
@@ -35,26 +41,43 @@ public abstract class AbstractEnemy : MonoBehaviour
 
     void Update()
     {
-        // Move towards the player if the player is within notice radius, if not
-        // go to a new location if the old location was not reached yet, else go to the old location.
-        NavAgent.SetDestination(Vector3.Distance(transform.position, Target.transform.position) <= NoticeDistance
-            ? Target.transform.position
-            : Vector3.Distance(transform.position, NewLocation) <= LocationRadius
-                ? NewLocation = new Vector3(Random.Range(-MovementRadius, MovementRadius), transform.position.y, Random.Range(-MovementRadius, MovementRadius))
-                : NewLocation);
-
-        // Attack the target if it is within the attack distance of the enemy and if the attack cooldown is over.
-        if (Vector3.Distance(transform.position, Target.transform.position) <= AttackDistance && canAttack)
+        if (GameManager.isGameRunning) // Only make enemies do something if the game is run
         {
-            Attack();
-            StartCoroutine(DelayCooldown(AttackCooldown));
+            NavAgent.isStopped = false;
 
-            IEnumerator DelayCooldown(int seconds)
+            // Move towards the player if the player is within notice radius, if not
+            // go to a new location if the old location was not reached yet, else go to the old location.
+            NavAgent.SetDestination(Vector3.Distance(transform.position, Target.transform.position) <= NoticeDistance
+                ? Target.transform.position
+                : Vector3.Distance(transform.position, NewLocation) <= LocationRadius
+                    ? NewLocation = new Vector3(Random.Range(-MovementRadius, MovementRadius), transform.position.y, Random.Range(-MovementRadius, MovementRadius))
+                    : NewLocation);
+
+            // Attack the target if it is within the attack distance of the enemy and if the attack cooldown is over.
+            if (Vector3.Distance(transform.position, Target.transform.position) <= AttackDistance && canAttack)
             {
-                canAttack = false;
-                yield return new WaitForSeconds(seconds);
-                canAttack = true;
+                Attack();
+                StartCoroutine(DelayCooldown(AttackCooldown));
+
+                IEnumerator DelayCooldown(int seconds)
+                {
+                    canAttack = false;
+                    yield return new WaitForSeconds(seconds);
+                    canAttack = true;
+                }
             }
+
+            // Play a random audio clip in the audioClips array if the chance of playing a audioclip is met
+            if (Random.Range(0F, 100F) <= chanceOfAudioPlaying)
+            {
+                audioSource.clip = audioEffects[Random.Range(0, audioEffects.Length)];
+                audioSource.Play();
+            }
+        }
+        else if (!GameManager.isGameRunning)
+        {
+            // Stop all enemy movement if the game is not running
+            NavAgent.isStopped = true;
         }
     }
 

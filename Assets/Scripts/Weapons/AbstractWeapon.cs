@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+
 public abstract class AbstractWeapon : MonoBehaviour
 {
     public abstract int Damage { get; }
@@ -8,6 +9,8 @@ public abstract class AbstractWeapon : MonoBehaviour
     public abstract float ShootDistance { get; }
     public abstract KeyCode Key { get; }
     public abstract int MagazineCapacity { get; }
+    public AudioClip shootSound;
+    public AudioClip reloadSound;
 
     public int shellsInMagazine;
 
@@ -20,24 +23,21 @@ public abstract class AbstractWeapon : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isOnCooldown)
+        if (GameManager.isGameRunning &&Input.GetMouseButtonDown(0) && !isOnCooldown)
         {
+            // For some reason I could not just change the shellsInMagazine value within this abstract class,
+            // so I also did it in the player class to make it work. Don't ask me why it doesn't work, because I have no clue myself haha
+            shellsInMagazine--;
+
+            Player.Shoot();
+            Player.PlaySound(shootSound);
+            StartCoroutine(GunShootCooldown(ShootCooldown));
+
             // Reload the gun with new bullets if the magazine is empty
             if (shellsInMagazine <= 0)
             {
                 StartCoroutine(GunReloadCooldown(MagazineReloadTime));
             }
-            // Shoot if there are bullets in the magazine and if the shoot cooldown is over
-            else
-            {
-                // For some reason I could not just change the shellsInMagazine value within this abstract class,
-                // so I also did it in the player class to make it work. Don't ask me why it doesn't work, because I have no clue myself haha
-                shellsInMagazine--;
-
-                Player.Shoot();
-                StartCoroutine(GunShootCooldown(ShootCooldown));
-            }
-
         }
 
         // Methods for creating a cooldown for shooting and reloading the gun
@@ -48,13 +48,12 @@ public abstract class AbstractWeapon : MonoBehaviour
 
             while (Time.time - startTime < seconds)
             {
-                // Show how much time is left in the shooting indicator
-                Player.UpdateShootIndicator(Time.time - startTime, seconds);
-
+                // Show how much time is left in the shooting indicator if the weapon has any bullets in it's megazine
+                Player.UpdateShootIndicator(shellsInMagazine <= 0 ? 0 : Time.time - startTime, seconds);
                 yield return null;
             }
 
-            isOnCooldown = false;
+            isOnCooldown = shellsInMagazine <= 0;
         }
 
         IEnumerator GunReloadCooldown(float seconds)
@@ -67,6 +66,7 @@ public abstract class AbstractWeapon : MonoBehaviour
 
                 shellsInMagazine++;
                 Player.EnterBullet();
+                Player.PlaySound(reloadSound);
                 Player.UpdateShootIndicator(shellsInMagazine, MagazineCapacity);
             }
 

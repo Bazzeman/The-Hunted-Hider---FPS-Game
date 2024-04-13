@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Slider))]
 public class Player : MonoBehaviour
 {
@@ -36,12 +37,13 @@ public class Player : MonoBehaviour
     private static GameObject weaponHolder;
     private static TextMeshProUGUI currentAmmo;
     private static TextMeshProUGUI maxAmmo;
+    private static AudioSource audioSource;
 
     void Start()
     {
         cam = GetComponentInChildren<Camera>();
+        audioSource = GetComponentInChildren<AudioSource>();
         controller = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
         weaponHolder = weaponHolderObject;
         maxAmmo = maxAmmoText;
         currentAmmo = currentAmmoText;
@@ -57,53 +59,56 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Move the player to the direction it is looking at, at the set speed multiplied by deltatime.
-        controller.Move(transform.right * Input.GetAxis("Horizontal") * horizontalSpeed * Time.deltaTime
-            + transform.up * verticalSpeed
-            + transform.forward * Input.GetAxis("Vertical") * horizontalSpeed * Time.deltaTime);
+        if (GameManager.isGameRunning) // Only make the player do something if the game is run
+        { 
+            // Move the player to the direction it is looking at, at the set speed multiplied by deltatime.
+            controller.Move(transform.right * Input.GetAxis("Horizontal") * horizontalSpeed * Time.deltaTime
+                + transform.up * verticalSpeed
+                + transform.forward * Input.GetAxis("Vertical") * horizontalSpeed * Time.deltaTime);
 
-        // Make the player jump and switch between walking and running if it is on the ground. 
-        if (controller.isGrounded)
-        {
-            horizontalSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
-            verticalSpeed = Input.GetButtonDown("Jump") ? jumpSpeed : 0;
-        }
-        else
-        {
-            verticalSpeed += gravity * Time.deltaTime;
-        }
-
-        // Moves the head of the player on the X-axis based on the cursor's vertical location, which is limited by -90 and 90 decrees.
-        cameraRotationX = Mathf.Clamp(cameraRotationX -= Input.GetAxis("Mouse Y") * cameraSensitivity * Time.deltaTime, -90F, 90F);
-        playerHead.localRotation = Quaternion.Euler(cameraRotationX, 0, 0);
-
-        // Moves the player on the Y-axis based on the cursor's horizontal position.
-        transform.Rotate(cameraSensitivity * Input.GetAxis("Mouse X") * Time.deltaTime * Vector3.up);
-
-        // Check if the player pressed a button which equals the required button to be pressed of a weapon in order to be switched to.
-        foreach (GameObject weaponObject in weapons)
-        {
-            if (Input.GetKey(weaponObject.GetComponent<AbstractWeapon>().Key))
+            // Make the player jump and switch between walking and running if it is on the ground. 
+            if (controller.isGrounded)
             {
-                SwitchWeapon(weaponObject);
+                horizontalSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+                verticalSpeed = Input.GetButtonDown("Jump") ? jumpSpeed : 0;
             }
-        }
-
-        // Create ray to detect when the a enemy which the player is looking at is close enough in order for the gun to be able to shoot it.
-        // If so change the cursor color and make the cursor thicker, if not change it back to the default color and default weight.
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, equipedWeapon.ShootDistance))
-        {
-            if (hit.collider.CompareTag("Enemy"))
+            else
             {
-                cursor.fontStyle = FontStyles.Bold;
-                cursor.color = new Color(enemyInRangeCursorColor.r, enemyInRangeCursorColor.g, enemyInRangeCursorColor.b, 1F); // Make sure the alpha is not null, else the cursor will be 
+                verticalSpeed += gravity * Time.deltaTime;
             }
-        }
-        else
-        {
-            cursor.fontStyle = FontStyles.Normal;
-            cursor.color = new Color(defaultCursorColor.r, defaultCursorColor.g, defaultCursorColor.b, 1F); // Make sure the alpha is not null, else the cursor will be 
+
+            // Moves the head of the player on the X-axis based on the cursor's vertical location, which is limited by -90 and 90 decrees.
+            cameraRotationX = Mathf.Clamp(cameraRotationX -= Input.GetAxis("Mouse Y") * cameraSensitivity * Time.deltaTime, -90F, 90F);
+            playerHead.localRotation = Quaternion.Euler(cameraRotationX, 0, 0);
+
+            // Moves the player on the Y-axis based on the cursor's horizontal position.
+            transform.Rotate(cameraSensitivity * Input.GetAxis("Mouse X") * Time.deltaTime * Vector3.up);
+
+            // Check if the player pressed a button which equals the required button to be pressed of a weapon in order to be switched to.
+            foreach (GameObject weaponObject in weapons)
+            {
+                if (Input.GetKey(weaponObject.GetComponent<AbstractWeapon>().Key))
+                {
+                    SwitchWeapon(weaponObject);
+                }
+            }
+
+            // Create ray to detect when the a enemy which the player is looking at is close enough in order for the gun to be able to shoot it.
+            // If so change the cursor color and make the cursor thicker, if not change it back to the default color and default weight.
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, equipedWeapon.ShootDistance))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    cursor.fontStyle = FontStyles.Bold;
+                    cursor.color = new Color(enemyInRangeCursorColor.r, enemyInRangeCursorColor.g, enemyInRangeCursorColor.b, 1F); // Make sure the alpha is not null, else the cursor will be 
+                }
+            }
+            else
+            {
+                cursor.fontStyle = FontStyles.Normal;
+                cursor.color = new Color(defaultCursorColor.r, defaultCursorColor.g, defaultCursorColor.b, 1F); // Make sure the alpha is not null, else the cursor will be 
+            }
         }
     }
 
@@ -132,6 +137,16 @@ public class Player : MonoBehaviour
             GameObject weaponObject = Instantiate(weapon, weaponHolder.transform); // Instantiate the weapon prefab onto the weapon holder
             weaponObject.transform.localPosition = Vector3.zero; // Make sure the new weapon is in the center of the weapon holder
         }
+    }
+
+    /// <summary>
+    /// Play the passed audio clip on the player.
+    /// </summary>
+    /// <param name="audio">The audio clip to play</param>
+    public static void PlaySound(AudioClip audio)
+    {
+        audioSource.clip = audio;
+        audioSource.Play();
     }
 
     /// <summary>
@@ -181,7 +196,7 @@ public class Player : MonoBehaviour
     {
         if ((health -= damage) <= 0)
         {
-            GameManager.GameOver();
+            GameManager.GameOver(false);
         }
         healthbarFill.color = healthbarGradient.Evaluate(healthBar.normalizedValue); // Set the color of the healthbar based on the healthbar's slider's normalized value.
         healthBar.value = health;
